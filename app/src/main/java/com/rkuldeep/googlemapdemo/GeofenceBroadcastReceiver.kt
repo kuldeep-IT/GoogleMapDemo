@@ -3,10 +3,14 @@ package com.rkuldeep.googlemapdemo
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.os.AsyncTask
+import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import com.google.android.gms.location.Geofence
 import com.google.android.gms.location.GeofencingEvent
+import com.rkuldeep.googlemapdemo.utils.Utils
 
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
@@ -29,6 +33,18 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
         when (transitionType) {
             Geofence.GEOFENCE_TRANSITION_ENTER -> {
                 Toast.makeText(context, "GEOFENCE_TRANSITION_ENTER", Toast.LENGTH_SHORT).show()
+
+                var bundle = Bundle()
+                bundle.putString("device_id",
+                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
+
+                // Replace "your_api_url_here" and "your_request_body_here" with the actual API URL and request body
+                val apiUrl = "https://us-central1-tatvic-gcp-dev-team.cloudfunctions.net/gmaps-poc"
+                val requestBody = Utils.bundleToJsonString(bundle)
+
+                // Execute the API call in the background thread
+                ApiCallTask().execute(apiUrl, requestBody)
+
                 notificationHelper.sendHighPriorityNotification(
                     "GEOFENCE_TRANSITION_ENTER", "",
                     MapsActivity::class.java
@@ -50,6 +66,21 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                     MapsActivity::class.java
                 )
             }
+        }
+    }
+
+
+    private inner class ApiCallTask : AsyncTask<String, Void, String>() {
+        override fun doInBackground(vararg params: String): String {
+            val apiUrl = params[0]
+            val requestBody = params[1]
+            return makePostApiCall(apiUrl, requestBody)
+        }
+
+        override fun onPostExecute(result: String) {
+            super.onPostExecute(result)
+
+            Log.d("MY_RESPONSE", result)
         }
     }
 
