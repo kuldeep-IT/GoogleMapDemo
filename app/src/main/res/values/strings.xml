@@ -2,5 +2,5 @@
     <string name="app_name">GoogleMapDemo</string>
     <string name="title_activity_maps">MapsActivity</string>
     <string name="google_map_key">AIzaSyDWng8LxAmq8l_5uOeNipc1YyI1AqmdLbQ</string>
-<!--    <string name="google_map_key">AIzaSyDdWamNBgMW3dqSWQlGeAZCU-ddraf4GBM</string>-->
+    <!--    <string name="google_map_key">AIzaSyDdWamNBgMW3dqSWQlGeAZCU-ddraf4GBM</string>-->
 </resources>

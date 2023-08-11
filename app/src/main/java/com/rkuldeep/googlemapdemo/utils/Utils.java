@@ -1,6 +1,9 @@
 package com.rkuldeep.googlemapdemo.utils;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 public class Utils {
 
@@ -48,6 +51,18 @@ public class Utils {
 
         // Handle other special characters if needed
         return value;
+    }
+
+    private static void sendWhatsApp(Activity activity, String message){
+        Intent whatsappIntent = new Intent(Intent.ACTION_SEND);
+        whatsappIntent.setType("text/plain");
+        whatsappIntent.setPackage("com.whatsapp");
+        whatsappIntent.putExtra(Intent.EXTRA_TEXT, message);
+        try {
+            activity.startActivity(whatsappIntent);
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(activity,"Whatsapp have not been installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 
 }

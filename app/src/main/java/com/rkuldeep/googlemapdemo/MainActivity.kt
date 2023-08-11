@@ -2,6 +2,7 @@ package com.rkuldeep.googlemapdemo
 
 import android.Manifest
 import android.app.PendingIntent
+import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
@@ -29,6 +30,8 @@ import com.rkuldeep.googlemapdemo.databinding.ActivityMainBinding
 
 
 class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+
+
     //Jai Dada
     //Om namah Siddham
     private lateinit var mMap: GoogleMap
@@ -54,7 +57,13 @@ class MainActivity : AppCompatActivity(), OnMapReadyCallback, GoogleMap.OnMapLon
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val sharedPreference =  getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+
         mainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+      val phoneNumber =   sharedPreference.getString("phonenumber","")
+        Log.d("MY_PHONE_NUMBER", "onCreate: "+phoneNumber)
+//        sharedPreference.getLong("l",1L)
 
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.mMap) as SupportMapFragment

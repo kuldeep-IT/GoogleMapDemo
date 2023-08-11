@@ -15,6 +15,9 @@ import com.rkuldeep.googlemapdemo.utils.Utils
 
 class GeofenceBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
+
+        val sharedPreference = context.getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+
         // TODO: This method is called when the BroadcastReceiver is receiving
         // an Intent broadcast.
 //        Toast.makeText(context, "Geofence triggered...", Toast.LENGTH_SHORT).show();
@@ -35,8 +38,13 @@ class GeofenceBroadcastReceiver : BroadcastReceiver() {
                 Toast.makeText(context, "GEOFENCE_TRANSITION_ENTER", Toast.LENGTH_SHORT).show()
 
                 var bundle = Bundle()
-                bundle.putString("device_id",
-                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID))
+                bundle.putString(
+                    "device_id",
+                    Settings.Secure.getString(context.contentResolver, Settings.Secure.ANDROID_ID)
+                )
+                bundle.putString(
+                    "mobile_number", sharedPreference.getString("phonenumber", "")
+                )
 
                 // Replace "your_api_url_here" and "your_request_body_here" with the actual API URL and request body
                 val apiUrl = "https://us-central1-tatvic-gcp-dev-team.cloudfunctions.net/gmaps-poc"
